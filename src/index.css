@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Paleta apagada: pino, azul pizarra y paja. Para cambiar los colores de todo
+   el sitio basta con editar estos valores. */
+@theme {
+  --font-sans: "Figtree Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Literata Variable", Georgia, serif;
+
+  --color-ink: #243238;
+  --color-paper: #f3f5f4;
+  --color-mist: #e3eae8;
+  --color-line: #cbd6d3;
+  --color-pine: #3f6560;
+  --color-pine-dark: #2f4f4b;
+  --color-harbor: #5f7e96;
+  --color-straw: #c9a96a;
+  --color-rose: #a4605f;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-pine);
+    outline-offset: 2px;
+  }
+}
+
+/* Unico movimiento de la portada: los bloques del horario aparecen uno a uno. */
+@keyframes block-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.block-in {
+  animation: block-in 0.6s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .block-in {
+    animation: none;
+  }
+}
