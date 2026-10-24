@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import api from '../config/api'
+import { isAuthenticated } from '../config/auth'
 
 const days = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
 const times = ['7:00', '9:00', '11:00', '14:00']
@@ -40,7 +41,7 @@ function ServerStatus() {
     api
       .get('/api/programs', { timeout: 4000 })
       .then(() => active && setStatus('online'))
-      .catch(() => active && setStatus('offline'))
+      .catch((err) => active && setStatus(err.response ? 'online' : 'offline'))
     return () => {
       active = false
     }
@@ -127,6 +128,9 @@ function Timetable() {
 }
 
 function Landing() {
+  // Con sesion se entra directo al sistema; sin sesion, al login.
+  const entryPath = isAuthenticated() ? '/estudiantes' : '/login'
+
   return (
     <div className="min-h-screen">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
@@ -141,7 +145,7 @@ function Landing() {
             Cómo empezar
           </a>
           <Link
-            to="/estudiantes"
+            to={entryPath}
             className="rounded-md bg-pine px-4 py-2 font-medium text-white transition-colors hover:bg-pine-dark"
           >
             Entrar al sistema
@@ -161,7 +165,7 @@ function Landing() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                to="/estudiantes"
+                to={entryPath}
                 className="rounded-md bg-pine px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-pine-dark"
               >
                 Entrar al sistema
